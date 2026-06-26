@@ -50,8 +50,8 @@ The following are machine-local runtime state and are ignored by git:
 ## Quick Start
 
 ```bash
-git clone <your-repo-url>
-cd <repo>
+git clone https://github.com/simplysuvi/personalwiki.git
+cd personalwiki
 cp .env.example .env
 ./setup.sh
 ./run.sh

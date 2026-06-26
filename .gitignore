@@ -1,0 +1,44 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local configuration and logs
+.env
+*.log
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node/Vite
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+build/
+
+# Runtime knowledge base state
+data/kb/manifest.json
+data/kb/sources/*
+!data/kb/sources/.gitkeep
+data/kb/markdown/*
+!data/kb/markdown/.gitkeep
+
+# Generated indexes/databases
+data/db/*
+!data/db/.gitkeep
+
+# Downloaded model weights and Hugging Face caches
+models/*
+!models/.gitkeep
+
+# Tool-local metadata
+.claude/

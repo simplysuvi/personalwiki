@@ -31,11 +31,11 @@ _embedder = None
 def _download_help(kind: str) -> str:
     if kind == "reasoning":
         return (
-            "huggingface-cli download unsloth/gemma-4-12b-it-GGUF \\\n"
+            "hf download unsloth/gemma-4-12b-it-GGUF \\\n"
             f'  --include "{config.REASONING_MODEL_PATH.name}" --local-dir {config.MODELS_DIR}'
         )
     return (
-        "huggingface-cli download nomic-ai/nomic-embed-text-v1.5-GGUF \\\n"
+        "hf download nomic-ai/nomic-embed-text-v1.5-GGUF \\\n"
         f'  --include "{config.EMBEDDING_MODEL_PATH.name}" --local-dir {config.MODELS_DIR}'
     )
 

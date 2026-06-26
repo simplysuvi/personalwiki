@@ -67,6 +67,8 @@ def _env_optional_path(name: str, default: Path | None) -> Path | None:
 # ── Identity ─────────────────────────────────────────────────────────────────
 USER_NAME      = _env("KB_USER_NAME", "User")
 ASSISTANT_NAME = _env("KB_ASSISTANT_NAME", "Assistant")
+APP_HOST       = _env("APP_HOST", "127.0.0.1")
+APP_PORT       = _env_int("APP_PORT", 8787)
 
 # ── Reasoning backend ────────────────────────────────────────────────────────
 #   "litert"   -> on-device Gemma-4 .litertlm via litert_lm

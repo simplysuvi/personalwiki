@@ -55,9 +55,19 @@ download_if_missing() {
   fi
 
   echo "[setup] downloading ${label}: ${include_file}"
-  huggingface-cli download "$repo" \
-    --include "$include_file" \
-    --local-dir models
+  if command -v hf >/dev/null 2>&1; then
+    hf download "$repo" \
+      --include "$include_file" \
+      --local-dir models
+  elif command -v huggingface-cli >/dev/null 2>&1; then
+    huggingface-cli download "$repo" \
+      --include "$include_file" \
+      --local-dir models
+  else
+    echo "error: Hugging Face CLI not found after installing requirements." >&2
+    echo "       Try: source .venv/bin/activate && python -m pip install -U huggingface_hub" >&2
+    return 1
+  fi
 }
 
 if [ "${SKIP_MODEL_DOWNLOAD:-0}" != "1" ]; then

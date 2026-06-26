@@ -41,7 +41,9 @@ app = FastAPI(title="Personal Document KB", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173",
-                   "http://localhost:3000", "http://127.0.0.1:3000"],
+                   "http://localhost:3000", "http://127.0.0.1:3000",
+                   f"http://localhost:{config.APP_PORT}",
+                   f"http://127.0.0.1:{config.APP_PORT}"],
     allow_methods=["*"], allow_headers=["*"],
 )
 
@@ -114,4 +116,4 @@ else:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000)
+    uvicorn.run("main:app", host=config.APP_HOST, port=config.APP_PORT)

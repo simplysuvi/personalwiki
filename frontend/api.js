@@ -1,8 +1,8 @@
 // Backend base URL + stream parsing.
-// Served by FastAPI itself (run.sh) -> same-origin; vite dev (:5173) -> :8000.
+// Served by FastAPI itself (run.sh) -> same-origin; Vite dev -> configured API.
 export const API_BASE =
   window.location.port === "5173" || window.location.port === "3000"
-    ? "http://localhost:8000"
+    ? (import.meta.env.VITE_API_BASE || "http://localhost:8787")
     : "";
 
 export async function getStatus() {

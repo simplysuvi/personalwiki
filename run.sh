@@ -11,6 +11,14 @@ if [ ! -x ".venv/bin/python" ]; then
 fi
 source .venv/bin/activate
 
+if [ -f ".env" ]; then
+  set -a
+  source .env
+  set +a
+fi
+APP_HOST="${APP_HOST:-127.0.0.1}"
+APP_PORT="${APP_PORT:-8787}"
+
 # 1a. validate local runtime files before doing slower work
 python - <<'PY'
 import sys
@@ -44,13 +52,14 @@ if missing:
     raise SystemExit(2)
 PY
 
-# 1b. fail fast if port 8000 is already taken (don't waste a 30s model load)
-EXISTING=$(lsof -ti tcp:8000 2>/dev/null || true)
+# 1b. fail fast if the port is already taken (don't waste a 30s model load)
+EXISTING=$(lsof -ti tcp:"$APP_PORT" 2>/dev/null || true)
 if [ -n "$EXISTING" ]; then
-  echo "error: port 8000 is already in use by PID(s): $EXISTING" >&2
+  echo "error: port $APP_PORT is already in use by PID(s): $EXISTING" >&2
   echo "       a server may already be running. Free it with:" >&2
   echo "         kill $EXISTING" >&2
-  echo "       (or open http://localhost:8000 if that's the server you want)." >&2
+  echo "       (or open http://localhost:$APP_PORT if that's the server you want)." >&2
+  echo "       To use another port, set APP_PORT in .env." >&2
   exit 1
 fi
 
@@ -74,8 +83,8 @@ fi
 # 3. open the browser once the server is up (models take ~30s to load)
 (
   for _ in $(seq 1 120); do
-    if curl -s --max-time 1 http://localhost:8000/api/status >/dev/null 2>&1; then
-      open "http://localhost:8000"
+    if curl -s --max-time 1 "http://localhost:$APP_PORT/api/status" >/dev/null 2>&1; then
+      open "http://localhost:$APP_PORT"
       exit 0
     fi
     sleep 1
@@ -83,6 +92,6 @@ fi
 ) &
 
 # 4. run the server in the foreground (Ctrl+C stops everything)
-echo "[run] launching - UI will open at http://localhost:8000 when models finish loading"
+echo "[run] launching - UI will open at http://localhost:$APP_PORT when models finish loading"
 cd backend
-exec python -m uvicorn main:app --port 8000
+exec python -m uvicorn main:app --host "$APP_HOST" --port "$APP_PORT"

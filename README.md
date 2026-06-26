@@ -57,7 +57,7 @@ cp .env.example .env
 ./run.sh
 ```
 
-Open `http://localhost:8000` if the browser does not open automatically.
+Open `http://localhost:8787` if the browser does not open automatically.
 
 `setup.sh` is safe to rerun. It skips models that are already present. Use
 `SKIP_MODEL_DOWNLOAD=1 ./setup.sh` if you want to point `.env` at existing model
@@ -68,6 +68,7 @@ files instead of downloading the defaults.
 Edit `.env` at the repo root. The common settings are:
 
 - `KB_USER_NAME` and `KB_ASSISTANT_NAME` for UI/prompt labels
+- `APP_PORT` if `8787` is already in use
 - `REASONING_MODEL_PATH` and `EMBEDDING_MODEL_PATH` for local model files
 - `REASONING_MODEL_REPO` / `REASONING_MODEL_FILE` and embedding equivalents for setup downloads
 - `CHAT_TEMPLATE_PATH` for the tool-calling chat template
@@ -83,7 +84,7 @@ Backend:
 ```bash
 source .venv/bin/activate
 cd backend
-python -m uvicorn main:app --port 8000 --reload
+python -m uvicorn main:app --port 8787 --reload
 ```
 
 Frontend:
@@ -93,8 +94,8 @@ cd frontend
 npm run dev
 ```
 
-The Vite dev server proxies API calls to `http://localhost:8000` through the
-frontend's `API_BASE` setting.
+The Vite dev server sends API calls to `http://localhost:8787` by default.
+Override it with `VITE_API_BASE=http://localhost:<port> npm run dev`.
 
 ## Rebuilding The Index
 
